@@ -11,21 +11,24 @@ DB_DATABASE=<локальная база данных>
 
 
 стартуем работу локального сервера...
-возможно будет необходимо выполнить команду
-php artisan key:generate
-php artisan storage:link
+
 
 далее в консоли выполняем такие действия
 устанавливаем все зависимости
 npm install
 composer install
+необходимо выполнить команду
+php artisan key:generate
+php artisan storage:link
 
 php artisan migrate
 php artisan Cities:import
 php artisan queue:work
 
 npm run dev или vite develop
+чтобы сайт корректно отображался, возможно придется настроить редирект с основного локального домена на папку /public
+local-domain --> /local-domain/public Это возможно сделать в настройках вашего сервера или в файле .htacces
 
 
-рабочая тестовая страница должна открываться локальному домену вашего проекта  напр http://localhost
+рабочая тестовая страница должна открываться локальному домену вашего проекта (.env APP_URL=)  напр http://localhost
 Если все правильно выполненно, там будет форма рассчета стоимости доставки с выбором городов отделений...
