@@ -25,7 +25,7 @@ php artisan migrate
 php artisan Cities:import
 php artisan queue:work
 
-npm run dev или vite develop
+npm run build или vite build
 чтобы сайт корректно отображался, возможно придется настроить редирект с основного локального домена на папку /public
 local-domain --> /local-domain/public Это возможно сделать в настройках вашего сервера или в файле .htacces
 
