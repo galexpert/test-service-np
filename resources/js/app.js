@@ -2,8 +2,17 @@ import './bootstrap';
 
 /*require('./bootstrap');*/
 
-import {createApp} from 'vue'
+//import {createApp} from 'vue'
+import { createApp } from 'vue/dist/vue.esm-bundler.js';
 
-import App from './App.vue'
+import CostDeliveryComponent from './components/CostDeliveryComponent.vue';
 
-createApp(App).mount("#app")
+const App = createApp({
+    components: {
+        CostDeliveryComponent
+    }
+});
+
+/*import App from './App.vue'*/
+
+App.mount("#app")

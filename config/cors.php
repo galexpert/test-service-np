@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'https://api.novaposhta.ua/v2.0/json/*'],
 
     'allowed_methods' => ['*'],
 
