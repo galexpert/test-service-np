@@ -218,7 +218,6 @@
         }
     </style>
 
-
     <!-- Custom styles for this template -->
    {{-- <link href="sticky-footer-navbar.css" rel="stylesheet">--}}
 
@@ -229,7 +228,7 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">navbar</a> {{--@dump(LaravelLocalization::getSupportedLocales())--}}
+            <a class="navbar-brand" href="#">navbar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -279,15 +278,6 @@
                     @if(session()->has('warning'))
                         <p class="alert alert-warning">{{ session()->get('warning') }}</p>
                     @endif
-                       {{-- @dump(LaravelLocalization::getSupportedLocales())
-                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                            <li>
-                                @dump($localeCode)
-                                 <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                     {{ $properties['native'] }}
-                                 </a>
-                            </li>
-                        @endforeach--}}
                      <h1> {{ __('front.global.calculate_shipping_cost') }} </h1>
                         @yield('content')
             </div>
@@ -296,22 +286,9 @@
     </div>
 </main>
 
-{{--<footer class="footer mt-auto py-3 bg-light">
-    <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-    </div>
-</footer>--}}
-<!--@routes-->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-
-{{--вар 2 предзагрузка скриптов
-тег rel="preload"  as="style" НЕ работает !!!! для css
-rel="preload" as="script" Работает Хлрошо!!!!
--- }}
-{{--<link rel="preload" href="{{ asset('build/assets/app-be643c35.css') }}" as="style">
-  <link  rel="preload" href="{{ asset('build/assets/realtyapp-e1d074d0.css') }}" as="style">
-  <script rel="preload" src="{{ asset('build/assets/realtyapp-fa375bb2.js') }}" as="script" ></script>--}}
 </body>
 </html>

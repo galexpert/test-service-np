@@ -1,18 +1,14 @@
 
 @extends('layouts.masterb5')
-<h1>
-@section('title', __('main.title'))
-</h1>
+
 @section('content')
 
 
 
     <div id="app">
 
-        {{--        @php($prod = $skus->toArray())
-                <realty-example-component :products="{{ json_encode($prod['data']) }}"></realty-example-component>--}}
         <div class="container">
-           {{-- <realty-cart></realty-cart>--}}
+
 
 
             @if(isset($cities))
