@@ -21,35 +21,27 @@ use GuzzleHttp\Client;
 class MainController extends Controller
 {
     private $localizationService;
-    private $LocationService;
 
-    public function __construct(LocalizationService $localizationService, LocationService $locationService)
+
+    public function __construct(LocalizationService $localizationService)
     {
         $this->localizationService = $localizationService;
-        $this->LocationService = $locationService;
 
     }
 
-
     public function index()
     {
-
         $lang = $this->localizationService->checkLocale();
-
-
         $cities = Location::where('parent_id', '=', 0)->with(['lang' => function ($query) use ($lang) {
             $query->where('lang', '=', $lang);
         }])->get()->toArray();
-
 
         return view('index', compact('cities'));
     }
 
     public function getPosts($id)
     {
-
         $lang = $this->localizationService->checkLocale();
-
         $cities = Location::where('parent_id', '=', $id)->with(['lang' => function ($query) use ($lang) {
             $query->where('lang', '=', $lang);
         }])->get()->toJson();
@@ -57,7 +49,6 @@ class MainController extends Controller
         return $cities;
 
     }
-
 
 
 }

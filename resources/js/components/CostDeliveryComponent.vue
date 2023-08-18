@@ -6,8 +6,14 @@
                 <div class="form-group d-flex me-2">
 
                     <select v-model="city.CitySenderRef" class="form-select form-select-lg mb-3"
-                            aria-label=".form-select-lg example">
-                        <option disabled value="null">Выберите Город</option>
+                            aria-label=".form-select-lg example"
+                            :class="{
+                            'is-invalid': v$.city.CitySenderRef.$invalid || v$.city.CitySenderRef.$model === '',
+                            'is-valid': v$.city.CitySenderRef.$model,
+                            }"
+                            @change="v$.city.CitySenderRef.$touch()"
+                    >
+                        <option disabled value="null">Місто відправлення (2 тестових)</option>
                         <option :value="'e718a680-4b33-11e4-ab6d-005056801329'">
                             {{ 'Київ' }}
                         </option>
@@ -15,42 +21,77 @@
                             {{ 'Львів' }}
                         </option>
                     </select>
+                    <span class="text-danger" v-for="error in v$.city.CitySenderRef.$errors"
+                          :key="error.$uid">
+                        {{ error.$message}}
+                    </span>
                 </div>
                 <label for="">{{ trans3 }}</label>
                 <div class="form-group d-flex me-2">
 
                     <select v-model="selectedCity" class="form-select form-select-lg mb-3"
-                            aria-label=".form-select-lg example" @change.prevent="getPost()">
+                            aria-label=".form-select-lg example" @change.prevent="getPost()"
+                            :class="{
+                            'is-invalid': v$.selectedCity.$invalid || v$.selectedCity.$model === '',
+                            'is-valid': v$.selectedCity.$model,
+                            }"
+                            @change="v$.selectedCity.$touch()"
+                    >
                         <option disabled value="null">Выберите Город</option>
                         <option v-for="(city,i) in cities" :key="city.id" :value="city">
                             {{ city.lang.title }}
                         </option>
                     </select>
+                    <span class="text-danger" v-for="error in v$.selectedCity.$errors"
+                          :key="error.$uid">
+                        {{ error.$message}}
+                    </span>
 
                 </div>
                 <template v-if="posts != 0">
                     <label for="">{{ trans7 }}</label>
                     <div class="form-group d-flex me-2">
                         <select v-model="selectedPost" class="form-select form-select-lg mb-3"
-                                aria-label=".form-select-lg example">
+                                aria-label=".form-select-lg example"
+                                :class="{
+                            'is-invalid': v$.selectedPost.$invalid || v$.selectedPost.$model === '',
+                            'is-valid': v$.selectedPost.$model,
+                            }"
+                                @change="v$.selectedPost.$touch()"
+                        >
                             <option disabled value="null">Виберіть відділення</option>
                             <option v-for="(post,i) in posts" :key="post.id" :value="post">
                                 {{ post.lang.title }}
                             </option>
                         </select>
-
+                        <span class="text-danger" v-for="error in v$.selectedPost.$errors"
+                              :key="error.$uid">
+                        {{ error.$message}}
+                    </span>
                     </div>
                 </template>
                 <div class="form-group">
                     <label>{{ trans8 }}</label>
-                    <input type="number" v-model.trim="price" class="form-control">
+                    <input  type="number"
+                            min="1"
+                             v-model.trim="price" class="form-control"
+                           :class="{'is-invalid': ( v$.price.required.$invalid ), 'is-valid': ( !v$.price.required.$invalid ) }"
+                           @click="v$.price.$touch()"
+                    >
+                    <span class="text-danger" v-for="error in v$.price.$errors"
+                          :key="error.$uid">
+                        {{ error.$message}}
+                    </span>
                 </div>
-                <button class="btn btn-success mt-4" :disabled="!city.CitySenderRef || !selectedCity.id || !price"
+                <!-- if need button disabled when errors
+                :disabled="!city.CitySenderRef || !selectedCity.id || !price"
+                -->
+                <button class="btn btn-success mt-4"
                         @click.prevent="getCost">
                     {{ trans5 }}
                 </button>
                 <!-- <cart-component></cart-component>-->
-                <div class="form-group d-flex me-2" v-if="alertCost !== null">
+                <div class="card form-group d-flex me-2 mt-4"  style="height: 11rem;" v-if="alertCost !== null">
                     <ul>
                         <li> {{ trans6 }} - {{selectedCity.lang.title}}</li>
                         <li> {{ trans7 }} - {{selectedPost.lang.title}}</li>
@@ -68,9 +109,42 @@
 
 <script>
     import axios from 'axios';
+    import useVuelidate from '@vuelidate/core'
+    import {required, minLength, maxLength, minValue, maxValue, integer} from '@vuelidate/validators'
 
     export default {
         name: "CostDeliveryComponent",
+        setup() {
+            return {
+                v$: useVuelidate(),
+                /*validationConfig: {
+                    $lazy: true,
+                }*/
+            }
+        },
+        validations() {
+            return {
+                city:{
+                    CitySenderRef: {
+                        required,
+                    },
+                },
+                selectedCity: {
+                    required,
+                },
+                selectedPost: {
+                    required,
+                },
+                price: {
+                    integer,
+                    required,
+                    minValue: minValue(1),
+                    maxValue: maxValue(100000),
+                },
+
+
+            }
+        },
         props: {
             cities: {type: Array},
             trans1: String,
@@ -82,7 +156,8 @@
             trans7: String,
             trans8: String,
         },
-        components: {},
+        components: {
+        },
         data() {
             return {
                 selected: '',
@@ -122,12 +197,19 @@
                 })
             },
             getCost() {
+                this.v$.$touch()
+                if (this.v$.$error) {
+                    let errorsstring = ''
+                    for (var key in this.v$.$errors) {
+                        errorsstring += "Поле: " + this.v$.$errors[key].$property + " - " + this.v$.$errors[key].$message + "\n"
+                    }
+                    alert(errorsstring);
+                    return false
+                }
 
                 let CitySenderRef = this.city.CitySenderRef
                 let CityRecipientRef = this.selectedCity.ref
                 let cost = this.price
-
-
                 axios.post('https://api.novaposhta.ua/v2.0/json/',
                     {
                         "apiKey": "",
@@ -175,11 +257,9 @@
                         return '0'
                     }
                 }
-                ``
 
                 return null
             },
-
 
             formReady() {
                 return Object.values(this.price).every(val => val.length > 0);

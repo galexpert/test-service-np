@@ -54,34 +54,19 @@ class LocationLang extends Model
 
     protected $hidden = ['id', 'created_at', 'updated_at'];
 
-   /* protected function alias(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => ucfirst($value),
-            set: fn ($value) => strtolower($value) . '-555',
-        );
-    }*/
-
-  /*  public function setAliasAttribute($value): string
-    {
-        return $this->alias . '-1';
-        //$this->attributes['alias'] = $this->alias. '-1';
-    }*/
-
 
     protected static function newFactory()
     {
         return \Modules\Realty\Database\factories\LocationLangFactory::new();
     }
 
-    public function setMetadataAttribute($value)
+   /* public function setMetadataAttribute($value)
     {
-        // dump($value);
         if (is_array($value)) {
             $this->attributes['metadata'] = Utils::jsonEncode($value, JSON_FORCE_OBJECT);
         } else {
             $this->attributes['metadata'] = Utils::jsonEncode($value, JSON_FORCE_OBJECT);
         }
-    }
+    }*/
 
 }

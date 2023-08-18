@@ -9,8 +9,6 @@
 
         <div class="container">
 
-
-
             @if(isset($cities))
                 <cost-delivery-component
                     :cities="{{json_encode($cities)}}"

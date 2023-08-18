@@ -20,19 +20,6 @@ class Location extends Model
     ];
    // protected $with = ['lang'];
 
-    /* protected function alias(): Attribute
-     {
-         return Attribute::make(
-             get: fn ($value) => ucfirst($value),
-             set: fn ($value) => strtolower($value) . '-555',
-         );
-     }*/
-
-    /*  public function setAliasAttribute($value): string
-      {
-          return $this->alias . '-1';
-          //$this->attributes['alias'] = $this->alias. '-1';
-      }*/
 
     public function children()
     {
@@ -55,11 +42,6 @@ class Location extends Model
         return $this->belongsTo(self::class, 'parent_id')->with('parent');
     }
 
-/*    public function files(){
-        return $this->morphMany(File::class, 'fileable')->where('parent_id', '=', null);
-        //return $this->morphedByMany(File::class, 'fileable');
-        //return $this->morphToMany(File::class, 'fileable');
-    }*/
     protected static function newFactory()
     {
         return \Modules\Realty\Database\factories\LocationFactory::new();
