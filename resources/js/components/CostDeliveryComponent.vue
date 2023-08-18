@@ -93,8 +93,8 @@
                 <!-- <cart-component></cart-component>-->
                 <div class="card form-group d-flex me-2 mt-4"  style="height: 11rem;" v-if="alertCost !== null">
                     <ul>
-                        <li> {{ trans6 }} - {{selectedCity.lang.title}}</li>
-                        <li> {{ trans7 }} - {{selectedPost.lang.title}}</li>
+                        <li> {{ trans6 }} - {{selectedCity?.lang?.title}}</li>
+                        <li> {{ trans7 }} - {{selectedPost?.lang?.title}}</li>
                         <li> {{ trans4 }} {{ alertCost }} грн.</li>
                     </ul>
 
@@ -110,7 +110,7 @@
 <script>
     import axios from 'axios';
     import useVuelidate from '@vuelidate/core'
-    import {required, minLength, maxLength, minValue, maxValue, integer} from '@vuelidate/validators'
+    import {required, minLength, maxLength, minValue, maxValue, integer, requiredIf,} from '@vuelidate/validators'
 
     export default {
         name: "CostDeliveryComponent",
@@ -133,7 +133,11 @@
                     required,
                 },
                 selectedPost: {
-                    required,
+                    required: requiredIf(function () {
+                       // return this.required;
+                        return this.selectedPost && this.selectedPost.length;
+                        //return this.countries && this.countries.length && this.selectedAddress.country !== 'null';
+                    }),
                 },
                 price: {
                     integer,
